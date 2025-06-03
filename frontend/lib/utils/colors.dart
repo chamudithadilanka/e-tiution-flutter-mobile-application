@@ -13,3 +13,4 @@ const kMainPinkColor = Color(0xfffff0000);
 const kMianLightBlueColor = Color(0xfff00f0ff);
 const kMainLightPurpleColor = Color(0xfffeb00ff);
 const kSubPinkColor = Color(0xfffff006b);
+const kSubPink = Color.fromARGB(255, 230, 137, 176);
