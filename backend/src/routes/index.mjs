@@ -4,6 +4,8 @@ import studentRoutes from "./student.mjs";
 import teacherRoutes from "./teacher.mjs";
 import attendanceRoutes from "./attendance.mjs";
 import classRoutes from "./class.mjs";
+import Assignmentroutes from "./assingment.mjs";
+import submissionRouter from "./submission.mjs";
 
 const rootRouter = Router();
 
@@ -14,4 +16,8 @@ rootRouter.use("/students", studentRoutes);
 rootRouter.use("/attendance", attendanceRoutes);
 //rootRouter.use("/notifications", notificationRoutes);
 rootRouter.use("/class",classRoutes);
+rootRouter.use("/assignment",Assignmentroutes);
+rootRouter.use("/submission",submissionRouter);
+
+
 export default rootRouter;

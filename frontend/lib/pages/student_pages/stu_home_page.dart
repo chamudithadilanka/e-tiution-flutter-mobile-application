@@ -581,6 +581,7 @@ import 'package:frontend/api/api_service.dart';
 import 'package:frontend/models/class_model.dart';
 import 'package:frontend/models/joined_class_model.dart';
 import 'package:frontend/pages/login_page.dart';
+import 'package:frontend/pages/student_pages/assingment/assignment.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/future_class_card.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/joined_classes_single.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/single_class.dart';
@@ -1127,9 +1128,19 @@ class _StudentHomePageState extends State<StudentHomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StudentHomeCard(
-                title: "Home Work",
-                image: "assets/images/working.png",
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GetStudentAssignment(),
+                    ),
+                  );
+                },
+                child: StudentHomeCard(
+                  title: "Home Work",
+                  image: "assets/images/working.png",
+                ),
               ),
               StudentHomeCard(
                 title: "Time Table",

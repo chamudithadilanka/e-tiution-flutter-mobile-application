@@ -45,7 +45,10 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
         ),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: "Messages"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bolt_sharp, size: 30),
+            label: "ChatBot",
+          ),
           BottomNavigationBarItem(
             icon: Padding(
               padding: const EdgeInsets.symmetric(vertical: 1),

@@ -1,30 +1,12 @@
 import mongoose from 'mongoose';
-
 const assignmentSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
+  title: String,
   description: String,
-  dueDate: {
-    type: Date,
-    required: true,
-  },
-  classId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Class',
-    required: true,
-  },
-  teacherId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Teacher',
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  dueDate: Date,
+  classId: { type: mongoose.Schema.Types.ObjectId, ref: 'Class' },
+  teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  materials: [String], // Array of filenames
+  createdAt: { type: Date, default: Date.now }
 });
 
 export default mongoose.model('Assignment', assignmentSchema);
-thuwa 

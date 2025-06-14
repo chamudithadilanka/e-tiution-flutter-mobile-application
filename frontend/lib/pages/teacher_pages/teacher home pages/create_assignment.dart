@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/api_service.dart';
 import 'package:frontend/models/class_model.dart';
+import 'package:frontend/pages/teacher_pages/CreateAssingment/create_asssingment_page.dart';
 import 'package:frontend/pages/teacher_pages/student%20attendance/student_attendance_single_page.dart';
 import 'package:frontend/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -248,7 +249,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                                   MaterialPageRoute(
                                                     builder:
                                                         (context) =>
-                                                            StudentAttendanceSinglePage(
+                                                            CreateAssignmentPage(
                                                               classId:
                                                                   classModel.id,
                                                             ),

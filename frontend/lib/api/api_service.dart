@@ -122,7 +122,10 @@
 // }
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/assignment_responce.dart';
+import 'package:frontend/models/assingment.dart';
 import 'package:frontend/models/attendance_day_details_model.dart';
 import 'package:frontend/models/class_model.dart';
 import 'package:frontend/models/joined_class_model.dart';
@@ -130,11 +133,12 @@ import 'package:frontend/models/student_attendance_model.dart';
 import 'package:frontend/models/student_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 
 class ApiService {
   // Base URL
-  static const String baseUrl = "http://192.168.133.176:4000/api";
-  static const String ip = "http://192.168.133.176:4000/";
+  static const String baseUrl = "http://192.168.13.176:4000/api";
+  static const String ip = "http://192.168.13.176:4000/";
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
@@ -757,7 +761,7 @@ class ApiService {
 
   Future<List<ClassModel>> getClassesByTeacherUserId(String userId) async {
     final url = Uri.parse(
-      'http://192.168.133.176:4000/api/class/classes/user/$userId',
+      'http://192.168.13.176:4000/api/class/classes/user/$userId',
     );
 
     try {
@@ -881,9 +885,7 @@ class ApiService {
       return;
     }
 
-    final url = Uri.parse(
-      "http://192.168.133.176:4000/api/class/$classId/join",
-    );
+    final url = Uri.parse("http://192.168.13.176:4000/api/class/$classId/join");
 
     try {
       final response = await http.post(
@@ -944,7 +946,7 @@ class ApiService {
     String status = 'present',
   }) async {
     final url = Uri.parse(
-      'http://192.168.133.176:4000/api/attendance/mark/each-classes',
+      'http://192.168.13.176:4000/api/attendance/mark/each-classes',
     );
 
     try {
@@ -1037,6 +1039,104 @@ class ApiService {
     } catch (e) {
       print('Error fetching attendance summary: $e');
       return null;
+    }
+  }
+
+  Future<Assignment?> createAssignment(Assignment assignment) async {
+    const String url = "$baseUrl/assignment/create";
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(assignment.toJson()),
+      );
+
+      print("Response status code: ${response.statusCode}");
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        print("Response body: ${response.body}");
+
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+
+        return Assignment.fromJson(jsonData['assignment'] ?? jsonData);
+      } else {
+        print("Error response: ${response.body}");
+        throw Exception("Failed to create assignment");
+      }
+    } catch (e) {
+      print("Exception: $e");
+      return null;
+    }
+  }
+
+  Future<List<Assignment>> fetchAssignmentsByClassId(String classId) async {
+    final url = Uri.parse('$baseUrl/assignment/class/$classId');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['success']) {
+          final List assignmentsJson = data['assignments'];
+          return assignmentsJson
+              .map((json) => Assignment.fromJson(json))
+              .toList();
+        } else {
+          throw Exception(data['message'] ?? 'Failed to fetch assignments');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Error fetching assignments: $e');
+    }
+  }
+
+  Future<bool> submitAssignment({
+    required String assignmentId,
+    required String studentId,
+    required String classId,
+    String? comments,
+    required File file,
+  }) async {
+    final uri = Uri.parse('$baseUrl/submission/upload');
+
+    var request = http.MultipartRequest('POST', uri);
+
+    // Add file
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        file.path,
+        filename: p.basename(file.path),
+      ),
+    );
+
+    // Add form fields
+    request.fields['assignmentId'] = assignmentId;
+    request.fields['studentId'] = studentId;
+    request.fields['classId'] = classId;
+    if (comments != null) {
+      request.fields['comments'] = comments;
+    }
+
+    try {
+      final response = await request.send();
+
+      if (response.statusCode == 201) {
+        print('✅ Submission successful');
+        return true;
+      } else {
+        print('❌ Submission failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('🔥 Error submitting assignment: $e');
+      return false;
     }
   }
 }
