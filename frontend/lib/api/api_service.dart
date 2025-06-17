@@ -137,8 +137,8 @@ import 'package:path/path.dart' as p;
 
 class ApiService {
   // Base URL
-  static const String baseUrl = "http://192.168.13.176:4000/api";
-  static const String ip = "http://192.168.13.176:4000/";
+  static const String baseUrl = "http://192.168.236.176:4000/api";
+  static const String ip = "http://192.168.236.176:4000/";
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
@@ -760,9 +760,7 @@ class ApiService {
   // }
 
   Future<List<ClassModel>> getClassesByTeacherUserId(String userId) async {
-    final url = Uri.parse(
-      'http://192.168.13.176:4000/api/class/classes/user/$userId',
-    );
+    final url = Uri.parse('$baseUrl/class/classes/user/$userId');
 
     try {
       final response = await http.get(url);
@@ -885,7 +883,7 @@ class ApiService {
       return;
     }
 
-    final url = Uri.parse("http://192.168.13.176:4000/api/class/$classId/join");
+    final url = Uri.parse("$baseUrl/class/$classId/join");
 
     try {
       final response = await http.post(
@@ -945,9 +943,7 @@ class ApiService {
     required String studentId,
     String status = 'present',
   }) async {
-    final url = Uri.parse(
-      'http://192.168.13.176:4000/api/attendance/mark/each-classes',
-    );
+    final url = Uri.parse('$baseUrl/attendance/mark/each-classes');
 
     try {
       final response = await http.post(
@@ -1137,6 +1133,30 @@ class ApiService {
     } catch (e) {
       print('🔥 Error submitting assignment: $e');
       return false;
+    }
+  }
+
+  Future<List<dynamic>?> getAssignmentSubmissions(String assignmentId) async {
+    try {
+      final url = Uri.parse('$baseUrl/assignment/submissions/$assignmentId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        if (json['success'] == true) {
+          return json['submissions'];
+        } else {
+          print('Failed: ${json['message']}');
+          return null;
+        }
+      } else {
+        print('HTTP Error: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Exception while fetching submissions: $e');
+      return null;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/api_service.dart';
 import 'package:frontend/pages/login_page.dart';
+import 'package:frontend/pages/teacher_pages/assignmentResultPages/assignment_result_page.dart';
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_assignment.dart';
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_class.dart';
 import 'package:frontend/pages/teacher_pages/student%20attendance/student_attendance.dart';
@@ -570,9 +571,19 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       title: "Create Class",
                     ),
                   ),
-                  TeacherHomeCards(
-                    photoUrl: "assets/images/working.png",
-                    title: "Results",
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AssingmentResulPages(),
+                        ),
+                      );
+                    },
+                    child: TeacherHomeCards(
+                      photoUrl: "assets/images/working.png",
+                      title: "Results",
+                    ),
                   ),
                 ],
               ),

@@ -453,3 +453,88 @@ class Teacher {
     return Teacher(name: "${json['firstName']} ${json['lastName']}".trim());
   }
 }
+
+// class Teacher {
+//   final String id;
+//   final String firstName;
+//   final String email;
+
+//   Teacher({required this.id, required this.firstName, required this.email});
+
+//   factory Teacher.fromJson(Map<String, dynamic> json) {
+//     return Teacher(
+//       id: json['_id'],
+//       firstName: json['firstName'],
+//       email: json['email'],
+//     );
+//   }
+// }
+
+class Class {
+  final String id;
+  final String description;
+
+  Class({required this.id, required this.description});
+
+  factory Class.fromJson(Map<String, dynamic> json) {
+    return Class(id: json['_id'], description: json['description']);
+  }
+}
+
+class Submission {
+  final String id;
+  final String file;
+  final String fileUrl;
+  final DateTime submittedAt;
+  final StudentSubmission student;
+
+  Submission({
+    required this.id,
+    required this.file,
+    required this.fileUrl,
+    required this.submittedAt,
+    required this.student,
+  });
+
+  factory Submission.fromJson(Map<String, dynamic> json) {
+    return Submission(
+      id: json['_id'],
+      file: json['file'],
+      fileUrl: json['fileUrl'],
+      submittedAt: DateTime.parse(json['submittedAt']),
+      student: StudentSubmission.fromJson(json['student']),
+    );
+  }
+}
+
+class StudentSubmission {
+  final String id;
+  final String firstName;
+  final String email;
+  final String? profileImage;
+  final String? gender;
+  final int? age;
+  final String? stream;
+
+  StudentSubmission({
+    required this.id,
+    required this.firstName,
+    required this.email,
+    this.profileImage,
+    this.gender,
+    this.age,
+    this.stream,
+  });
+
+  factory StudentSubmission.fromJson(Map<String, dynamic> json) {
+    return StudentSubmission(
+      id: json['_id'],
+      firstName: json['firstName'],
+      email: json['email'],
+      profileImage: json['profileImage'],
+      gender: json['gender'],
+      age: json['age'],
+      stream: json['stream'],
+    );
+  }
+}

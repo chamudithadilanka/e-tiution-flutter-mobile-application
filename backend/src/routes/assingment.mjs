@@ -128,6 +128,8 @@ import User from '../models/user.mjs';
 import Class from '../models/class.mjs';
 import fs from 'fs/promises';
 import path from 'path';
+import StudentDetails from '../models/student.mjs';
+
 
 const AssignmentRoutes = express.Router();
 
@@ -384,5 +386,268 @@ AssignmentRoutes.get('/class/:classId', async (req, res) => {
     });
   }
 });
+
+
+
+// // submissions each assingmnet
+// AssignmentRoutes.get('/:assignmentId/submissions', async (req, res) => {
+//   try {
+//     const { assignmentId } = req.params;
+
+//     const assignment = await Assignment.findById(assignmentId)
+//       .populate({
+//         path: 'submissions',
+//         populate: {
+//           path: 'studentId', // optional: get full student details
+//           select: 'name email'
+//         }
+//       })
+//       .exec();
+
+//     if (!assignment) {
+//       return res.status(404).json({ success: false, message: 'Assignment not found' });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       assignmentId: assignment._id,
+//       title: assignment.title,
+//       submissionCount: assignment.submissions.length,
+//       submissions: assignment.submissions
+//     });
+//   } catch (err) {
+//     console.error('Error getting submissions:', err);
+//     res.status(500).json({ success: false, message: 'Server error', error: err.message });
+//   }
+// });
+
+
+
+
+// AssignmentRoutes.get('/:assignmentId', async (req, res) => {
+//   try {
+//     const { assignmentId } = req.params;
+
+//     // Find assignment and populate teacher, class, and submissions with student
+//     const assignment = await Assignment.findById(assignmentId)
+//       .populate('teacherId', 'name email')
+//       .populate('classId', 'name description')
+//       .populate({
+//         path: 'submissions',
+//         populate: {
+//           path: 'studentId', // Assuming each submission has studentId field
+//           model: 'User',
+//           select: 'name email profileImage'
+//         }
+//       });
+
+//     if (!assignment) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Assignment not found',
+//       });
+//     }
+
+//     // Build material URLs
+//     const materialUrls = assignment.materials.map(filename =>
+//       `${req.protocol}://${req.get('host')}/uploads/${filename}`
+//     );
+
+//     res.json({
+//       success: true,
+//       assignment: {
+//         ...assignment.toObject(),
+//         materialUrls,
+//         teacher: assignment.teacherId,
+//         class: assignment.classId,
+//         submissions: assignment.submissions.map(sub => ({
+//           _id: sub._id,
+//           submittedAt: sub.submittedAt,
+//           file: sub.file,
+//           student: sub.studentId
+//         }))
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error fetching assignment:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Server error',
+//       error: error.message
+//     });
+//   }
+// });
+
+
+
+
+
+
+AssignmentRoutes.get('/assing/:assignmentId', async (req, res) => {
+  try {
+    const { assignmentId } = req.params;
+
+    const assignment = await Assignment.findById(assignmentId)
+      .populate('teacherId', 'firstName email')
+      .populate('classId', 'name description')
+      .populate({
+        path: 'submissions',
+        populate: {
+          path: 'studentId',
+          model: 'User',
+          select: 'firstName email profileImage role'
+        }
+      });
+
+    if (!assignment) {
+      return res.status(404).json({ success: false, message: 'Assignment not found' });
+    }
+
+    const materialUrls = assignment.materials.map(filename =>
+      `${req.protocol}://${req.get('host')}/uploads/${filename}`
+    );
+
+    // Fetch StudentDetails for each student
+    const populatedSubmissions = await Promise.all(
+      assignment.submissions.map(async (sub) => {
+        const user = sub.studentId;
+
+        // Default student info from User
+        let studentData = {
+          _id: user?._id || null,
+          firstName: user?.firstName || null,
+          email: user?.email || null,
+          profileImage: user?.profileImage
+            ? `${req.protocol}://${req.get('host')}/uploads/${user.profileImage}`
+            : null
+        };
+
+        // Get extra student details if role is 'student'
+        if (user && user.role === 'student') {
+          const studentDetail = await StudentDetails.findOne({ userID: user._id });
+          if (studentDetail) {
+            studentData = {
+              ...studentData,
+              gender: studentDetail.gender || null,
+              age: studentDetail.age || null,
+              stream: studentDetail.stream || null
+            };
+
+            // Use StudentDetails.profileImage if available
+            if (studentDetail.profileImage) {
+              studentData.profileImage = `${req.protocol}://${req.get('host')}/uploads/${studentDetail.profileImage}`;
+            }
+          }
+        }
+
+        return {
+          _id: sub._id,
+          file: sub.file,
+          fileUrl: `${req.protocol}://${req.get('host')}/uploads/${sub.file}`,
+          submittedAt: sub.submittedAt,
+          student: studentData
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      assignment: {
+        ...assignment.toObject(),
+        materialUrls,
+        teacher: assignment.teacherId,
+        class: assignment.classId,
+        submissions: populatedSubmissions
+      }
+    });
+
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+});
+
+
+
+
+AssignmentRoutes.get('/submissions/:assignmentId', async (req, res) => {
+  try {
+    const { assignmentId } = req.params;
+
+    const assignment = await Assignment.findById(assignmentId)
+      .populate({
+        path: 'submissions',
+        populate: {
+          path: 'studentId',
+          model: 'User',
+          select: 'firstName email profileImage role'
+        }
+      });
+
+    if (!assignment) {
+      return res.status(404).json({ success: false, message: 'Assignment not found' });
+    }
+
+    const populatedSubmissions = await Promise.all(
+      assignment.submissions.map(async (sub) => {
+        const user = sub.studentId;
+
+        let studentData = {
+          _id: user?._id || null,
+          firstName: user?.firstName || null,
+          email: user?.email || null,
+          profileImage: user?.profileImage
+            ? `${req.protocol}://${req.get('host')}/uploads/${user.profileImage}`
+            : null
+        };
+
+        if (user && user.role === 'student') {
+          const studentDetail = await StudentDetails.findOne({ userID: user._id });
+          if (studentDetail) {
+            studentData = {
+              ...studentData,
+              gender: studentDetail.gender || null,
+              age: studentDetail.age || null,
+              stream: studentDetail.stream || null
+            };
+
+            if (studentDetail.profileImage) {
+              studentData.profileImage = `${req.protocol}://${req.get('host')}/uploads/${studentDetail.profileImage}`;
+            }
+          }
+        }
+
+        return {
+          _id: sub._id,
+          file: sub.file,
+          fileUrl: `${req.protocol}://${req.get('host')}/uploads/${sub.file}`,
+          submittedAt: sub.submittedAt,
+          student: studentData
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      submissions: populatedSubmissions
+    });
+
+  } catch (error) {
+    console.error('Error fetching submissions:', error.message);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default AssignmentRoutes;

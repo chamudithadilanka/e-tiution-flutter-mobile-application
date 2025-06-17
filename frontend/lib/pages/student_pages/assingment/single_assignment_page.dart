@@ -189,6 +189,7 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
   final ApiService apiService = ApiService();
   List<PlatformFile> _selectedFiles = [];
   bool _isSubmitting = false;
+  bool allSuccess = true;
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = GlobalKey();
   Future<void> _pickFiles() async {
     try {
@@ -403,12 +404,12 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
                   final assignment = assignments[index];
                   return Container(
                     margin: const EdgeInsets.only(bottom: 20),
-                    height: 700,
+                    height: 680,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [kMainDarkBlue, kMainColor],
                         begin: Alignment.topLeft,
-                        end: Alignment.bottomLeft,
+                        end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -459,7 +460,7 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
                             ),
                           ),
                           Text(
-                            "Due Date: ${assignment.id ?? 'N/A'}",
+                            "Due Date: ${assignment.dueDate ?? 'N/A'}",
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white,
@@ -650,16 +651,13 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           Container(
                             width: 370,
                             height: 60,
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [
-                                  kMainColor,
-                                  kMainDarkBlue,
-                                ], // Google-like gradient
+                                colors: [kMainColor, kMainDarkBlue],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
@@ -673,6 +671,7 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
                                 ),
                               ],
                             ),
+
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
@@ -716,7 +715,6 @@ class _SingleAssignmentPageState extends State<SingleAssignmentPage> {
                                             return;
                                           }
 
-                                          bool allSuccess = true;
                                           for (final file in _selectedFiles) {
                                             if (file.path == null) continue;
 
