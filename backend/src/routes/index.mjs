@@ -6,6 +6,8 @@ import attendanceRoutes from "./attendance.mjs";
 import classRoutes from "./class.mjs";
 import Assignmentroutes from "./assingment.mjs";
 import submissionRouter from "./submission.mjs";
+import generateSessionRouter from "./generateSession.mjs";
+import attendanceRecordRouter from "./attendanceRecord.mjs";
 
 const rootRouter = Router();
 
@@ -18,6 +20,7 @@ rootRouter.use("/attendance", attendanceRoutes);
 rootRouter.use("/class",classRoutes);
 rootRouter.use("/assignment",Assignmentroutes);
 rootRouter.use("/submission",submissionRouter);
-
+rootRouter.use("/session",generateSessionRouter);
+rootRouter.use("/qrattendance",attendanceRecordRouter);
 
 export default rootRouter;

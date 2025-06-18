@@ -137,8 +137,8 @@ import 'package:path/path.dart' as p;
 
 class ApiService {
   // Base URL
-  static const String baseUrl = "http://192.168.236.176:4000/api";
-  static const String ip = "http://192.168.236.176:4000/";
+  static const String baseUrl = "http://192.168.141.176:4000/api";
+  static const String ip = "http://192.168.141.176:4000/";
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
