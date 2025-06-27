@@ -4,6 +4,8 @@ import 'package:frontend/pages/teacher_pages/teach_favorite_page.dart';
 import 'package:frontend/pages/teacher_pages/teach_home_page.dart';
 import 'package:frontend/pages/teacher_pages/teach_profile_page.dart';
 import 'package:frontend/pages/teacher_pages/teach_qr_page.dart';
+import 'package:frontend/pages/teacher_pages/teach_stu_detail_page.dart';
+import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/teacher_classes_list.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,9 +27,9 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       TeacherHomePage(),
-      TeacherFavoritePage(),
+      TeacherClassesList(),
       TeacherQrPage(),
-      StudentMesssagePage(),
+      TeacherFavoritePage(),
       TeacherProfilePage(),
     ];
     return Scaffold(
@@ -68,8 +70,8 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorite",
+            icon: Icon(Icons.list_alt_outlined),
+            label: "ClassList",
           ),
           BottomNavigationBarItem(
             icon: Container(
@@ -91,8 +93,8 @@ class _TeacherDashBoardState extends State<TeacherDashBoard> {
             label: "",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            label: "Student Details",
+            icon: Icon(Icons.favorite_border_outlined),
+            label: "favorites",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),

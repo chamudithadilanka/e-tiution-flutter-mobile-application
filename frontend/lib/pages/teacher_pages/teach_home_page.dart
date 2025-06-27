@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/api_service.dart';
 import 'package:frontend/pages/login_page.dart';
 import 'package:frontend/pages/teacher_pages/assignmentResultPages/assignment_result_page.dart';
+import 'package:frontend/pages/teacher_pages/createVideoTutorial/craete_video_tutotial_page.dart';
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_assignment.dart';
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_class.dart';
 import 'package:frontend/pages/teacher_pages/student%20attendance/student_attendance.dart';
@@ -582,7 +583,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                     },
                     child: TeacherHomeCards(
                       photoUrl: "assets/images/working.png",
-                      title: "Results",
+                      title: "Assignment Submissions",
                     ),
                   ),
                 ],
@@ -608,9 +609,19 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                       title: "My Classes List",
                     ),
                   ),
-                  TeacherHomeCards(
-                    photoUrl: "assets/images/working.png",
-                    title: "Students",
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateVideoTutorial(),
+                        ),
+                      );
+                    },
+                    child: TeacherHomeCards(
+                      photoUrl: "assets/images/working.png",
+                      title: "Create Video Tutorial",
+                    ),
                   ),
                 ],
               ),

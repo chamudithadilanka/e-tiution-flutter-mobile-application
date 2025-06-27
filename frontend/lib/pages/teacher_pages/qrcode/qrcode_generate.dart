@@ -89,7 +89,7 @@ class _TeacherQrCodeGenerateState extends State<TeacherQrCodeGenerate> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,17 +108,33 @@ class _TeacherQrCodeGenerateState extends State<TeacherQrCodeGenerate> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+
             if (qrToken != null)
               PrettyQr(
                 data: qrToken!,
-                size: 200,
+                size: 250,
                 errorCorrectLevel: QrErrorCorrectLevel.M,
                 roundEdges: true,
               ),
-            ElevatedButton(
-              onPressed: generateQrToken,
-              child: const Text('Generate New QR Code'),
+
+            Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [kMainDarkBlue, kMainColor]),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+                onPressed: generateQrToken,
+                child: const Text(
+                  'Generate New QR Code',
+                  style: TextStyle(color: kMainWhiteColor),
+                ),
+              ),
             ),
           ],
         ),

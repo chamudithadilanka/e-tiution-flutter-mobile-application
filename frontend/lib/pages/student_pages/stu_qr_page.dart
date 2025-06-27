@@ -105,7 +105,7 @@ class _StudentQrCodePageState extends State<StudentQrCodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Student QR Code Scanner')),
+      appBar: AppBar(title: const Text('Scane QR and Mark Attendance')),
       body: Stack(
         children: [
           MobileScanner(
@@ -123,6 +123,83 @@ class _StudentQrCodePageState extends State<StudentQrCodePage> {
               }
             },
           ), // Add a semi-transparent overlay with a scan window
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.width * 0.487,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+            ),
+          ),
+
+          Positioned(
+            top: 80,
+            left: 0,
+            right: 0,
+            child: Text(
+              "Scan QR Code",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: kMainWhiteColor,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+
+          Positioned(
+            top: 200.5,
+            left: 366,
+            right: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.width * 0.794,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+            ),
+          ),
+
+          Positioned(
+            top: 200.5,
+            left: 0,
+            right: 366,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.width * 0.794,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+            ),
+          ),
+
+          Positioned(
+            top: 527,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.width * 0.483,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+            ),
+          ),
+
+          Positioned(
+            top: 560,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Scan QR Code to Mark Attendance your each Class and Before Get Permission Your Class Teacher.  ",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: kMainWhiteColor.withOpacity(0.5),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+
           _buildScannerOverlay(context),
         ],
       ),
@@ -135,10 +212,18 @@ class _StudentQrCodePageState extends State<StudentQrCodePage> {
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          border: Border.all(color: kMainNavSelected, width: 3),
+          border: Border.all(color: kMainNavSelected, width: 6),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(children: [LottieBuilder.asset("")]),
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.width * 0.1),
+            LottieBuilder.asset(
+              "assets/animations/Animation - 1750473004398.json",
+              fit: BoxFit.cover,
+            ),
+          ],
+        ),
       ),
     );
   }

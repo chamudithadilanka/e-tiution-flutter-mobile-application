@@ -132,13 +132,14 @@ import 'package:frontend/models/joined_class_model.dart';
 import 'package:frontend/models/student_attendance_model.dart';
 import 'package:frontend/models/student_model.dart';
 import 'package:frontend/models/user_model.dart';
+import 'package:frontend/models/video_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
 class ApiService {
   // Base URL
-  static const String baseUrl = "http://192.168.141.176:4000/api";
-  static const String ip = "http://192.168.141.176:4000/";
+  static const String baseUrl = "http://192.168.14.176:4000/api";
+  static const String ip = "http://192.168.14.176:4000/";
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
@@ -1157,6 +1158,41 @@ class ApiService {
     } catch (e) {
       print('Exception while fetching submissions: $e');
       return null;
+    }
+  }
+
+  Future<Map<String, dynamic>> addMultipleVideos({
+    required List<Map<String, dynamic>> videos,
+  }) async {
+    try {
+      final url = Uri.parse('$baseUrl/video/add-multiple');
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (authToken != null) 'Authorization': 'Bearer $authToken',
+        },
+        body: jsonEncode({'videos': videos}),
+      );
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 201) {
+        return {
+          'success': true,
+          'message': 'Videos added successfully',
+          'data': responseData,
+        };
+      } else {
+        throw Exception(responseData['error'] ?? 'Failed to add videos');
+      }
+    } on http.ClientException catch (e) {
+      throw Exception('Network error: ${e.message}');
+    } on FormatException {
+      throw Exception('Invalid server response format');
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
     }
   }
 }

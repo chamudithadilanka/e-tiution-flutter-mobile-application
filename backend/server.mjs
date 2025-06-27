@@ -74,7 +74,7 @@ server.use((err, req, res, next) => {
 
 // Server config
 const PORT = process.env.PORT || 4001;
-const HOST = process.env.HOST || "192.168.141.176"; // Using environment variable
+const HOST = process.env.HOST || "192.168.14.176"; // Using environment variable
 
 // Initialize and start server
 const startServer = async () => {
