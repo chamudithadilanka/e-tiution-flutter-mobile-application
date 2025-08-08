@@ -3,6 +3,7 @@ import Timetable from '../models/timeTable.mjs';
 
 const timetableRouter = express.Router();
 
+<<<<<<< HEAD
 
 
 timetableRouter.post('/create',async (req,res)=>{
@@ -68,6 +69,10 @@ timetableRouter.get('/:classId', async (req, res) => {
 });
 
 timetableRouter.put('/update', async (req, res) => {
+=======
+// Add or update timetable for a class
+timetableRouter.post('/add', async (req, res) => {
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
   try {
     const { classId, slots } = req.body;
 
@@ -75,6 +80,7 @@ timetableRouter.put('/update', async (req, res) => {
       return res.status(400).json({ error: 'classId and slots are required' });
     }
 
+<<<<<<< HEAD
     // Find and update timetable
     const updatedTimetable = await Timetable.findOneAndUpdate(
       { classId },
@@ -87,9 +93,44 @@ timetableRouter.put('/update', async (req, res) => {
     }
 
     res.status(200).json(updatedTimetable);
+=======
+    // Check if timetable exists
+    let timetable = await Timetable.findOne({ classId });
+
+    if (timetable) {
+      // Update
+      timetable.slots = slots;
+      await timetable.save();
+    } else {
+      // Create new
+      timetable = new Timetable({ classId, slots });
+      await timetable.save();
+    }
+
+    res.status(201).json(timetable);
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+<<<<<<< HEAD
+=======
+timetableRouter.get('/:classId', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const timetable = await Timetable.findOne({ classId });
+
+    if (!timetable) {
+      return res.status(404).json({ message: 'Timetable not found' });
+    }
+
+    res.json(timetable);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 export default timetableRouter;

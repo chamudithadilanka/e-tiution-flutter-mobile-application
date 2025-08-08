@@ -585,9 +585,12 @@ import 'package:frontend/pages/student_pages/assingment/assignment.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/future_class_card.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/joined_classes_single.dart';
 import 'package:frontend/pages/student_pages/teachers_classes/single_class.dart';
+<<<<<<< HEAD
 import 'package:frontend/pages/student_pages/timeSchedual_or_timeTable/class_list_time_schedule.dart';
 import 'package:frontend/pages/student_pages/timeSchedual_or_timeTable/timeschedule_list.dart';
 import 'package:frontend/pages/student_pages/videoTutorial/class_list_video_tutoril.dart';
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/student_dashboard/student_home/home_card.dart';
 import 'package:intl/intl.dart';
@@ -862,7 +865,11 @@ class _StudentHomePageState extends State<StudentHomePage> {
   ) {
     return Container(
       width: double.infinity,
+<<<<<<< HEAD
       height: 380,
+=======
+      height: 350,
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
       decoration:
           (int.tryParse(formatterHour) ?? 0) < 18
               ? BoxDecoration(
@@ -938,6 +945,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                       ),
                     ),
                     const SizedBox(width: 15),
+<<<<<<< HEAD
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -954,10 +962,51 @@ class _StudentHomePageState extends State<StudentHomePage> {
                             "Hello, $firstName",
                             style: const TextStyle(
                               fontSize: 25,
+=======
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "$formattedDate  $formatterDay",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: kMainWhiteColor,
+                          ),
+                        ),
+                        Text(
+                          "Hello, $firstName",
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: kMainWhiteColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await Clipboard.setData(
+                              ClipboardData(text: studentId),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                  "Student ID copied to clipboard!",
+                                ),
+                                duration: const Duration(seconds: 5),
+                                backgroundColor: kMainNavSelected,
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Student ID : $studentId",
+                            style: const TextStyle(
+                              fontSize: 8,
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                               fontWeight: FontWeight.w700,
                               color: kMainWhiteColor,
                             ),
                           ),
+<<<<<<< HEAD
                           GestureDetector(
                             onTap: () async {
                               await Clipboard.setData(
@@ -984,6 +1033,10 @@ class _StudentHomePageState extends State<StudentHomePage> {
                           ),
                         ],
                       ),
+=======
+                        ),
+                      ],
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                     ),
                     MediaQuery.of(context).size.width > 600
                         ? SizedBox(width: 100)
@@ -1123,6 +1176,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 title: "My QR",
                 image: "assets/images/key_13945248.png",
               ),
+<<<<<<< HEAD
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -1136,6 +1190,11 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   title: "Tutorial Video",
                   image: "assets/images/video-tutorials.png",
                 ),
+=======
+              StudentHomeCard(
+                title: "Tutorial Video",
+                image: "assets/images/video-tutorials.png",
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
               ),
             ],
           ),
@@ -1157,6 +1216,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   image: "assets/images/working.png",
                 ),
               ),
+<<<<<<< HEAD
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -1170,6 +1230,11 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   title: "Time Table",
                   image: "assets/images/study-time.png",
                 ),
+=======
+              StudentHomeCard(
+                title: "Time Table",
+                image: "assets/images/study-time.png",
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
               ),
             ],
           ),
@@ -1271,6 +1336,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+<<<<<<< HEAD
                               Expanded(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1306,6 +1372,41 @@ class _StudentHomePageState extends State<StudentHomePage> {
                                     ),
                                   ],
                                 ),
+=======
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: kMainWhiteColor.withOpacity(0.5),
+                                      border: Border.all(
+                                        color: kMainWhiteColor,
+                                        width: 3,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.network(
+                                        "${classModel.teacher.profileImageUrl}",
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                               ),
                               const SizedBox(height: 5),
                               Text(

@@ -131,7 +131,10 @@ import 'package:frontend/models/class_model.dart';
 import 'package:frontend/models/joined_class_model.dart';
 import 'package:frontend/models/student_attendance_model.dart';
 import 'package:frontend/models/student_model.dart';
+<<<<<<< HEAD
 import 'package:frontend/models/timeschedule.dart';
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/models/video_model.dart';
 import 'package:http/http.dart' as http;
@@ -139,8 +142,13 @@ import 'package:path/path.dart' as p;
 
 class ApiService {
   // Base URL
+<<<<<<< HEAD
   static const String baseUrl = "http://192.168.255.176:4000/api";
   static const String ip = "http://192.168.255.176:4000/";
+=======
+  static const String baseUrl = "http://192.168.14.176:4000/api";
+  static const String ip = "http://192.168.14.176:4000/";
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
@@ -1196,6 +1204,7 @@ class ApiService {
       throw Exception('An unexpected error occurred: $e');
     }
   }
+<<<<<<< HEAD
 
   Future<Map<String, dynamic>> getAllVideos() async {
     try {
@@ -1365,4 +1374,6 @@ class ApiService {
       throw Exception('Failed to fetch schedules: ${e.toString()}');
     }
   }
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 }

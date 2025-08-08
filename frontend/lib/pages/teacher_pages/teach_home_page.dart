@@ -7,7 +7,10 @@ import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_assig
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/create_class.dart';
 import 'package:frontend/pages/teacher_pages/student%20attendance/student_attendance.dart';
 import 'package:frontend/pages/teacher_pages/teacher%20home%20pages/teacher_classes_list.dart';
+<<<<<<< HEAD
 import 'package:frontend/pages/teacher_pages/timetable/class_timetable.dart';
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 import 'package:frontend/utils/colors.dart';
 import 'package:frontend/widget/teacher_daashboard/teacher_card.dart';
 import 'package:intl/intl.dart';
@@ -347,6 +350,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                 ),
                               ),
                               SizedBox(width: 20),
+<<<<<<< HEAD
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -379,6 +383,29 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                     ),
                                   ],
                                 ),
+=======
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    ("$formattedDate  " + "$formatterDay"),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: kMainWhiteColor,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    "Hello, $firstName",
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w700,
+                                      color: kMainWhiteColor,
+                                    ),
+                                  ),
+                                ],
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                               ),
                               SizedBox(width: 50),
                               Icon(
@@ -399,6 +426,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                 decoration: BoxDecoration(
                                   color: kMainWhiteColor.withOpacity(0.10),
                                   borderRadius: BorderRadius.circular(10),
+<<<<<<< HEAD
 
                                   boxShadow: [
                                     BoxShadow(
@@ -409,6 +437,16 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                         255,
                                       ).withOpacity(0.10),
                                       spreadRadius: 0,
+=======
+                                  border: Border.all(
+                                    color: kMainWhiteColor,
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kMainWhiteColor.withOpacity(0.10),
+                                      spreadRadius: 1,
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                                       blurRadius: 1,
                                       offset: Offset(0, 1),
                                     ),
@@ -456,6 +494,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                 decoration: BoxDecoration(
                                   color: kMainWhiteColor.withOpacity(0.10),
                                   borderRadius: BorderRadius.circular(10),
+<<<<<<< HEAD
 
                                   boxShadow: [
                                     BoxShadow(
@@ -466,6 +505,16 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                                         255,
                                       ).withOpacity(0.10),
                                       spreadRadius: 0,
+=======
+                                  border: Border.all(
+                                    color: kMainWhiteColor,
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kMainWhiteColor.withOpacity(0.10),
+                                      spreadRadius: 1,
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                                       blurRadius: 1,
                                       offset: Offset(0, 1),
                                     ),
@@ -643,6 +692,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               ),
             ),
             SizedBox(height: 15),
+<<<<<<< HEAD
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -666,6 +716,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               ),
             ),
             SizedBox(height: 15),
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
           ],
         ),
       ),

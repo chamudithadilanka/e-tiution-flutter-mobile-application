@@ -4,7 +4,10 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
+<<<<<<< HEAD
   flutter_inappwebview_windows
+=======
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
   permission_handler_windows
   url_launcher_windows
 )

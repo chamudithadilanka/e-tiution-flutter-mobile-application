@@ -6,7 +6,11 @@ const videoSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+<<<<<<< HEAD
   videoUrl: {
+=======
+  videoId: {
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
     type: String,
     required: true,
     trim: true

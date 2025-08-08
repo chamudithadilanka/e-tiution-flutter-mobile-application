@@ -14,7 +14,11 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
+<<<<<<< HEAD
   late Animation<Offset> _moveAnimation;
+=======
+  late Animation<Offset> _moveAnimation; // Floating effect
+>>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 
   @override
   void initState() {
