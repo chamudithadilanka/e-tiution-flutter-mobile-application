@@ -123,32 +123,28 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/assignment_responce.dart';
 import 'package:frontend/models/assingment.dart';
 import 'package:frontend/models/attendance_day_details_model.dart';
 import 'package:frontend/models/class_model.dart';
 import 'package:frontend/models/joined_class_model.dart';
+import 'package:frontend/models/payment.dart';
 import 'package:frontend/models/student_attendance_model.dart';
 import 'package:frontend/models/student_model.dart';
-<<<<<<< HEAD
 import 'package:frontend/models/timeschedule.dart';
-=======
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/models/video_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
+import 'package:http_parser/http_parser.dart'; // For MediaType
+import 'package:mime/mime.dart';
 
 class ApiService {
   // Base URL
-<<<<<<< HEAD
   static const String baseUrl = "http://192.168.255.176:4000/api";
   static const String ip = "http://192.168.255.176:4000/";
-=======
-  static const String baseUrl = "http://192.168.14.176:4000/api";
-  static const String ip = "http://192.168.14.176:4000/";
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 
   // Register user - Fixed version
   Future<UserModel> addRegister(UserModel register) async {
@@ -1204,7 +1200,6 @@ class ApiService {
       throw Exception('An unexpected error occurred: $e');
     }
   }
-<<<<<<< HEAD
 
   Future<Map<String, dynamic>> getAllVideos() async {
     try {
@@ -1374,6 +1369,250 @@ class ApiService {
       throw Exception('Failed to fetch schedules: ${e.toString()}');
     }
   }
-=======
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
+
+  Future<Map<String, dynamic>> createPaymentSlip(
+    PaymentSlip paymentSlip,
+  ) async {
+    try {
+      print('Starting payment slip upload...');
+      print('Base URL: $baseUrl');
+
+      var uri = Uri.parse('$baseUrl/payment/upload');
+      print('Request URL: $uri');
+
+      var request = http.MultipartRequest('POST', uri);
+
+      // Add text fields
+      request.fields['studentId'] = paymentSlip.studentId;
+      request.fields['classId'] = paymentSlip.classId;
+      request.fields['amount'] = paymentSlip.amount.toString();
+      request.fields['month'] = paymentSlip.month;
+
+      print('Request fields: ${request.fields}');
+
+      // Validate and add file
+      if (paymentSlip.slipFile == null || paymentSlip.slipFile!.isEmpty) {
+        throw Exception('No image file path provided');
+      }
+
+      File imageFile = File(paymentSlip.slipFile!);
+      print('Image file path: ${paymentSlip.slipFile}');
+
+      // Check if file exists
+      bool fileExists = await imageFile.exists();
+      print('File exists: $fileExists');
+
+      if (!fileExists) {
+        throw Exception(
+          'Image file does not exist at path: ${paymentSlip.slipFile}',
+        );
+      }
+
+      // Get file info
+      int fileSize = await imageFile.length();
+      print('File size: $fileSize bytes');
+
+      if (fileSize == 0) {
+        throw Exception('Image file is empty');
+      }
+
+      if (fileSize > 5 * 1024 * 1024) {
+        // 5MB limit
+        throw Exception('File too large. Maximum size is 5MB.');
+      }
+
+      // Validate file type
+      final mimeType = lookupMimeType(imageFile.path);
+      print('Detected MIME type: $mimeType');
+
+      if (mimeType == null || !mimeType.startsWith('image/')) {
+        throw Exception('Invalid file type. Only image files are allowed.');
+      }
+
+      // Create multipart file with explicit content type
+      var multipartFile = await http.MultipartFile.fromPath(
+        'slipFile', // This MUST match your backend field name
+        paymentSlip.slipFile!,
+        filename: paymentSlip.slipFile!.split('/').last,
+        contentType: MediaType.parse(mimeType), // Set proper content type
+      );
+
+      request.files.add(multipartFile);
+      print(
+        'File added to request. Filename: ${multipartFile.filename}, '
+        'Size: ${multipartFile.length}, Type: $mimeType',
+      );
+
+      // Don't override content-type header - let the multipart request handle it
+      // request.headers.addAll({'Content-Type': 'multipart/form-data'});
+
+      print('Sending request...');
+
+      // Send request
+      var streamedResponse = await request.send().timeout(
+        Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception(
+            'Request timeout. Please check your internet connection.',
+          );
+        },
+      );
+
+      // Get response
+      var response = await http.Response.fromStream(streamedResponse);
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      // Parse response
+      Map<String, dynamic> responseData;
+      try {
+        responseData = json.decode(response.body);
+      } catch (e) {
+        throw Exception('Invalid response format from server');
+      }
+
+      if (response.statusCode == 201) {
+        print('Payment slip uploaded successfully!');
+        return responseData;
+      } else {
+        String errorMessage =
+            responseData['message'] ?? 'Unknown error occurred';
+        throw Exception(
+          'Upload failed (${response.statusCode}): $errorMessage',
+        );
+      }
+    } on SocketException catch (e) {
+      print('Network error: $e');
+      throw Exception('Network error. Please check your internet connection.');
+    } on HttpException catch (e) {
+      print('HTTP error: $e');
+      throw Exception('Server connection error: $e');
+    } on FormatException catch (e) {
+      print('Data format error: $e');
+      throw Exception('Invalid data format: $e');
+    } catch (e) {
+      print('Unexpected error uploading payment slip: $e');
+      throw Exception('Failed to upload payment slip: $e');
+    }
+  }
+
+  //================================
+  // Future<List<PaymentSlip>> fetchPaymentSlipsByStudentId(
+  //   String studentId,
+  // ) async {
+  //   final String url = "$baseUrl/payment/student/$studentId";
+  //   print('Fetching payment slips from: $url');
+
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(url),
+  //       headers: {"Content-Type": "application/json"},
+  //     );
+
+  //     print('API Response: ${response.statusCode} - ${response.body}');
+
+  //     if (response.statusCode == 200) {
+  //       final dynamic responseData = json.decode(response.body);
+
+  //       // Case 1: Response is already a List
+  //       if (responseData is List) {
+  //         return responseData
+  //             .where((item) => item != null)
+  //             .map<PaymentSlip>(
+  //               (json) => PaymentSlip.fromJson(json as Map<String, dynamic>),
+  //             )
+  //             .toList();
+  //       }
+
+  //       // Case 2: Response is a Map with 'slips' field containing List
+  //       if (responseData is Map<String, dynamic>) {
+  //         if (responseData['slips'] is List) {
+  //           return (responseData['slips'] as List)
+  //               .where((item) => item != null)
+  //               .map<PaymentSlip>(
+  //                 (json) => PaymentSlip.fromJson(json as Map<String, dynamic>),
+  //               )
+  //               .toList();
+  //         }
+  //       }
+
+  //       // Case 3: Response is a single payment slip object
+  //       if (responseData is Map<String, dynamic>) {
+  //         try {
+  //           return [PaymentSlip.fromJson(responseData)];
+  //         } catch (e) {
+  //           throw Exception('Failed to parse single payment slip: $e');
+  //         }
+  //       }
+
+  //       throw FormatException(
+  //         'Unexpected response format: ${responseData.runtimeType}',
+  //       );
+  //     } else {
+  //       throw HttpException(
+  //         'Request failed with status ${response.statusCode}',
+  //         uri: Uri.parse(url),
+  //       );
+  //     }
+  //   } on FormatException catch (e) {
+  //     print('JSON Format Error: $e');
+  //     throw Exception('Invalid server response format');
+  //   } on http.ClientException catch (e) {
+  //     print('Network Error: $e');
+  //     throw Exception('Network error occurred');
+  //   } catch (e) {
+  //     print('Unexpected Error: $e');
+  //     throw Exception('Failed to fetch payment slips: ${e.toString()}');
+  //   }
+  // }
+
+  Future<List<PaymentSlip>> fetchPaymentSlipsByStudentId(
+    String studentId,
+  ) async {
+    final String url = "$baseUrl/payment/student/$studentId";
+    print('Fetching payment slips from: $url');
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+      );
+
+      print('API Response: ${response.statusCode} - ${response.body}');
+
+      if (response.statusCode == 200) {
+        final dynamic responseData = json.decode(response.body);
+
+        // Handle the expected response format where slips are in a 'slips' array
+        if (responseData is Map<String, dynamic> &&
+            responseData['slips'] is List) {
+          return (responseData['slips'] as List)
+              .where((item) => item != null)
+              .map<PaymentSlip>(
+                (json) => PaymentSlip.fromJson(json as Map<String, dynamic>),
+              )
+              .toList();
+        }
+
+        throw FormatException(
+          'Unexpected response format: ${responseData.runtimeType}',
+        );
+      } else {
+        throw HttpException(
+          'Request failed with status ${response.statusCode}',
+          uri: Uri.parse(url),
+        );
+      }
+    } on FormatException catch (e) {
+      print('JSON Format Error: $e');
+      throw Exception('Invalid server response format');
+    } on http.ClientException catch (e) {
+      print('Network Error: $e');
+      throw Exception('Network error occurred');
+    } catch (e) {
+      print('Unexpected Error: $e');
+      throw Exception('Failed to fetch payment slips: ${e.toString()}');
+    }
+  }
 }

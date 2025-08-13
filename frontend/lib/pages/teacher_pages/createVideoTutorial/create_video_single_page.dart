@@ -15,11 +15,7 @@ class CreateVideoTutorialSinglePage extends StatefulWidget {
 class _CreateVideoTutorialSinglePageState
     extends State<CreateVideoTutorialSinglePage> {
   String title = "";
-<<<<<<< HEAD
   String videoUrl = "";
-=======
-  String videoId = "";
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
   String description = "";
   String thumbnailUrl = "";
 
@@ -51,11 +47,7 @@ class _CreateVideoTutorialSinglePageState
   }
 
   void submitted() async {
-<<<<<<< HEAD
     if (title.isEmpty || videoUrl.isEmpty) {
-=======
-    if (title.isEmpty || videoId.isEmpty) {
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please fill in all required fields."),
@@ -71,11 +63,7 @@ class _CreateVideoTutorialSinglePageState
       final videos = [
         {
           "title": title,
-<<<<<<< HEAD
           "videoUrl": videoUrl,
-=======
-          "videoId": videoId,
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
           "description": description,
           "thumbnailUrl": thumbnailUrl,
           "teacherId": userID,
@@ -110,11 +98,7 @@ class _CreateVideoTutorialSinglePageState
 
       setState(() {
         title = "";
-<<<<<<< HEAD
         videoUrl = "";
-=======
-        videoId = "";
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
         description = "";
         thumbnailUrl = "";
       });
@@ -201,15 +185,9 @@ class _CreateVideoTutorialSinglePageState
           ),
           const SizedBox(height: 15),
           _buildTextField(
-<<<<<<< HEAD
             label: "YouTube Video URL",
             value: videoUrl,
             onChanged: (val) => setState(() => videoUrl = val),
-=======
-            label: "YouTube Video ID",
-            value: videoId,
-            onChanged: (val) => setState(() => videoId = val),
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
           ),
           const SizedBox(height: 15),
           _buildTextField(

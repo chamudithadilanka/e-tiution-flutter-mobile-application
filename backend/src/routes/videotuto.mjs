@@ -32,7 +32,6 @@ videoRouter.post("/add-multiple", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 videoRouter.get("/:classId", async (req, res) => {
   try {
     const { classId } = req.params;
@@ -58,6 +57,4 @@ videoRouter.get("/:classId", async (req, res) => {
 } );
 
 
-=======
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
 export default videoRouter;

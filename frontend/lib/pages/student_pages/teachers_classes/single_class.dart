@@ -120,7 +120,6 @@ class _SingleClassState extends State<SingleClass> {
                                 ),
                                 SizedBox(width: 10),
 
-<<<<<<< HEAD
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -145,29 +144,6 @@ class _SingleClassState extends State<SingleClass> {
                                       ),
                                     ],
                                   ),
-=======
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${classmdel.teacher.firstName} ${classmdel.teacher.lastName}",
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      "Class ID : ${classmdel.id}",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                                 ),
                                 MediaQuery.of(context).size.width > 600
                                     ? SizedBox(width: 100)
@@ -236,11 +212,7 @@ class _SingleClassState extends State<SingleClass> {
                             SizedBox(height: 10),
                             Container(
                               width: 300,
-<<<<<<< HEAD
                               height: 180,
-=======
-                              height: 210,
->>>>>>> 5993507b22ce399dc36b9435b5811f83789575de
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(10),
